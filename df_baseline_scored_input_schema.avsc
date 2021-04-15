@@ -1,0 +1,826 @@
+{
+  "name": "df_baseline_scored_input_schema.avsc",
+  "type": "record",
+  "fields": [
+    {
+      "name": "Id",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "non-predictor",
+      "protectedClass": false,
+      "driftCandidate": false,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MSSubClass",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MSZoning",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "LotFrontage",
+      "type": "float",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "LotArea",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Street",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Alley",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "LotShape",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "LandContour",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Utilities",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "LotConfig",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "LandSlope",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Neighborhood",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Condition1",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Condition2",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BldgType",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "HouseStyle",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "OverallQual",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "OverallCond",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "YearBuilt",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "YearRemodAdd",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "RoofStyle",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "RoofMatl",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Exterior1st",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Exterior2nd",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MasVnrType",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MasVnrArea",
+      "type": "float",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "ExterQual",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "ExterCond",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Foundation",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtQual",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtCond",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtExposure",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtFinType1",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtFinSF1",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtFinType2",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtFinSF2",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtUnfSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "TotalBsmtSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Heating",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "HeatingQC",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "CentralAir",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Electrical",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "1stFlrSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "2ndFlrSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "LowQualFinSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GrLivArea",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtFullBath",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtHalfBath",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "FullBath",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "HalfBath",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BedroomAbvGr",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "KitchenAbvGr",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "KitchenQual",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "TotRmsAbvGrd",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Functional",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Fireplaces",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "FireplaceQu",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageType",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageYrBlt",
+      "type": "float",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageFinish",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageCars",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageArea",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageQual",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageCond",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "PavedDrive",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "WoodDeckSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "OpenPorchSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "EnclosedPorch",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "3SsnPorch",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "ScreenPorch",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "PoolArea",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "PoolQC",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "Fence",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MiscFeature",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MiscVal",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MoSold",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "YrSold",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "SaleType",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "SaleCondition",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "ground_truth",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "label",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": true
+    },
+    {
+      "name": "prediction",
+      "type": "float",
+      "dataClass": "numerical",
+      "role": "score",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": true
+    }
+  ]
+}
