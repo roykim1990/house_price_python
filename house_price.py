@@ -8,6 +8,7 @@ from aequitas.bias import Bias
 # modelop.init
 def begin():
     global lasso_model
+    global train_encoded_columns
     
     # load pickled Lasso linear regression model
     lasso_model = pickle.load(open('lasso.pickle', 'rb'))
@@ -17,7 +18,7 @@ def begin():
 # modelop.score
 def action(data):
     # Turn data into DataFrame
-    df = pandas.DataFrame(data)
+    df = pandas.DataFrame([data])
     
     predictive_features = ['MSSubClass', 'MSZoning', 'LotFrontage',
                            'LotArea', 'Street', 'Alley', 'LotShape',
