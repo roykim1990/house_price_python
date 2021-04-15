@@ -1,9 +1,7 @@
 import pandas
 import pickle
+import numpy
 import copy
-from aequitas.preprocessing import preprocess_input_df
-from aequitas.group import Group
-from aequitas.bias import Bias
 
 # modelop.init
 def begin():
