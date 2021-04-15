@@ -146,14 +146,17 @@ def action(data):
         "SaleType",
         "SaleCondition",
     ]
-
+    
+    ground_truth = df['SalePrice']
+    
+    df = df[predictive_features]
+    
     # imputing missing values
     for col in predictive_features:
-        if df.loc[:, col].isna().sum() > 0:
-            if df.loc[:, col].dtype == "object":
-                df.loc[:, col] = df.loc[:, col].fillna("None")
-            else:
-                df.loc[:, col] = df.loc[:, col].fillna(0)
+        if col in categorical_features:
+            df.loc[:, col] = df.loc[:, col].fillna("None")
+        else:
+            df.loc[:, col] = df.loc[:, col].fillna(0)
 
     # one-hot encode
     df = pandas.get_dummies(df, columns=categorical_features)
@@ -165,8 +168,10 @@ def action(data):
 
     # restricting columns to only be final list of encoded columns
     df = df[train_encoded_columns]
-
-    df["predictions"] = lasso_model.predict(df)
+    
+    # saving prediction and ground_truth to original dataframe
+    df["prediction"] = lasso_model.predict(df)
+    df['ground_truth'] = ground_truth
 
     # MOC expects the action function to be a "yield" function
     yield df.to_dict(orient="records")
