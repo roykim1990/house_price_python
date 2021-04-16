@@ -1,6 +1,7 @@
 import pandas
 import pickle
 import numpy
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
 
 # modelop.init
@@ -16,8 +17,14 @@ def begin():
 
 # modelop.score
 def action(data):
-    # Turn data into DataFrame
-    df = pandas.DataFrame([data])
+    # converting data into dataframe with some checks
+    if isinstance(data, pandas.DataFrame):
+        df = data
+    else:
+        if isinstance(data, list):
+            df = pandas.DataFrame(data)
+        else:
+            df = pandas.DataFrame([data])
 
     predictive_features = [
         "MSSubClass",
@@ -146,11 +153,9 @@ def action(data):
         "SaleType",
         "SaleCondition",
     ]
-    
-    ground_truth = df['SalePrice']
-    
+
+    ground_truth = df["SalePrice"]
     df = df[predictive_features]
-    
     # imputing missing values
     for col in predictive_features:
         if col in categorical_features:
@@ -168,15 +173,30 @@ def action(data):
 
     # restricting columns to only be final list of encoded columns
     df = df[train_encoded_columns]
-    
-    # saving prediction and ground_truth to original dataframe
+
     df["prediction"] = lasso_model.predict(df)
-    df['ground_truth'] = ground_truth
+    df["ground_truth"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
-    yield df.to_dict(orient="records")
+    return df.to_dict(orient="records")
 
 
 # modelop.metrics
 def metrics(data):
-    pass
+    # converting data into dataframe with some checks
+    if isinstance(data, pandas.DataFrame):
+        df = data
+    else:
+        if isinstance(data, list):
+            df = pandas.DataFrame(data)
+        else:
+            df = pandas.DataFrame([data])
+
+    y = df["ground_truth"]
+    y_preds = df["prediction"]
+
+    return {
+        "MAE": mean_absolute_error(y, y_preds),
+        "RMSE": mean_squared_error(y, y_preds) ** 0.5,
+        "R2": r2_score(y, y_preds),
+    }
