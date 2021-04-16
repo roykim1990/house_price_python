@@ -195,7 +195,7 @@ def metrics(data):
     y = df["ground_truth"]
     y_preds = df["prediction"]
 
-    return {
+    yield {
         "MAE": mean_absolute_error(y, y_preds),
         "RMSE": mean_squared_error(y, y_preds) ** 0.5,
         "R2": r2_score(y, y_preds),

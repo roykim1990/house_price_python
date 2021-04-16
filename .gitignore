@@ -1,3 +1,4 @@
 # add files to ignore
 .ipynb_checkpoints
 .vscode
+test_outputs
