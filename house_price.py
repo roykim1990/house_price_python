@@ -28,36 +28,46 @@ def action(data):
         else:
             df = pandas.DataFrame([data])
 
-    # dictionary to convert values in certain columns
-    generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
-
-    # the only features that the model trained on
-    predictive_features = [
-        "FullBath",
-        "1stFlrSF",
-        "TotalBsmtSF",
-        "BsmtQual",
-        "GarageArea",
-        "GarageCars",
-        "KitchenQual",
-        "ExterQual",
-        "GrLivArea",
-        "OverallQual",
-    ]
-
     # set aside ground truth to later re-append to dataframe
     ground_truth = df["SalePrice"]
 
-    # limiting features to just the ones the model needs
-    df = df[predictive_features]
+    # dictionaries to convert values in certain columns
+    generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
+    fireplace_quality = {"Ex": 5, "Gd": 4, "TA": 3, "Fa": 2, "Po": 1, "None": 0}
+    garage_finish = {"Fin": 3, "RFn": 2, "Unf": 1, "None": 0}
 
-    # imputing missing values
-    for col in predictive_features:
+    # imputations
+    df.loc[:, "GarageYrBlt"] = df.loc[:, "GarageYrBlt"].fillna(df["YearBuilt"])
+    for col in ["GarageFinish", "BsmtQual", "FireplaceQu"]:
         df.loc[:, col] = df.loc[:, col].fillna("None")
+    # the rest of NaNs will be filled with 0s - end model only uses numerical features
+    for col in df.columns:
+        df[col] = df[col].fillna(0)
 
     # converting categorical values from certain features into numerical
     for col in ["BsmtQual", "KitchenQual", "ExterQual"]:
         df.loc[:, col] = df[col].map(generic)
+    df.loc[:, "GarageFinish"] = df["GarageFinish"].map(garage_finish)
+    df.loc[:, "FireplaceQu"] = df["FireplaceQu"].map(fireplace_quality)
+
+    # feature engineering
+    f = lambda x: bool(1) if x > 0 else bool(0)
+    df["eHasPool"] = df["PoolArea"].apply(f)
+    df["eHasGarage"] = df["GarageArea"].apply(f)
+    df["eHasBsmt"] = df["TotalBsmtSF"].apply(f)
+    df["eHasFireplace"] = df["Fireplaces"].apply(f)
+    df["eHasRemodeling"] = df["YearRemodAdd"] - df["YearBuilt"] > 0
+    df["eTotalSF"] = df["TotalBsmtSF"] + df["1stFlrSF"] + df["2ndFlrSF"]
+    df["eTotalBathrooms"] = (
+        df["FullBath"]
+        + (0.5 * df["HalfBath"])
+        + df["BsmtFullBath"]
+        + (0.5 * df["BsmtHalfBath"])
+    )
+    df["eOverallQual_TotalSF"] = df["OverallQual"] * df["eTotalSF"]
+
+    # limiting features to just the ones the model needs
+    df = df[train_encoded_columns]
 
     # scale inputs
     df_ss = standard_scaler.transform(df)
