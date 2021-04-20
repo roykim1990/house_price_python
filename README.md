@@ -1,6 +1,6 @@
 # house_price_python
 
-A sample data science project that uses a Lasso Linear Regression Python model to predict house price from the Ames Housing Data dataset. Specifically, this example is used to show the capabilities of ModelOp Center.
+A sample data science project that uses a Lasso Linear Regression Python model to predict house price from the Ames Housing Data dataset. Specifically, this example is used to show the how to make ModelOp Center-compliant code.
 
 
 Assets:
