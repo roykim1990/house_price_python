@@ -3,14 +3,16 @@ import pickle
 import numpy
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
-
 # modelop.init
 def begin():
     global lasso_model
+    global standard_scaler
     global train_encoded_columns
 
     # load pickled Lasso linear regression model
     lasso_model = pickle.load(open("lasso.pickle", "rb"))
+    # load pickled standard scaler
+    standard_scaler = pickle.load(open("standard_scaler.pickle", "rb"))
     # load train_encoded_columns
     train_encoded_columns = pickle.load(open("train_encoded_columns.pickle", "rb"))
 
@@ -26,159 +28,40 @@ def action(data):
         else:
             df = pandas.DataFrame([data])
 
-    predictive_features = [
-        "MSSubClass",
-        "MSZoning",
-        "LotFrontage",
-        "LotArea",
-        "Street",
-        "Alley",
-        "LotShape",
-        "LandContour",
-        "Utilities",
-        "LotConfig",
-        "LandSlope",
-        "Neighborhood",
-        "Condition1",
-        "Condition2",
-        "BldgType",
-        "HouseStyle",
-        "OverallQual",
-        "OverallCond",
-        "YearBuilt",
-        "YearRemodAdd",
-        "RoofStyle",
-        "RoofMatl",
-        "Exterior1st",
-        "Exterior2nd",
-        "MasVnrType",
-        "MasVnrArea",
-        "ExterQual",
-        "ExterCond",
-        "Foundation",
-        "BsmtQual",
-        "BsmtCond",
-        "BsmtExposure",
-        "BsmtFinType1",
-        "BsmtFinSF1",
-        "BsmtFinType2",
-        "BsmtFinSF2",
-        "BsmtUnfSF",
-        "TotalBsmtSF",
-        "Heating",
-        "HeatingQC",
-        "CentralAir",
-        "Electrical",
-        "1stFlrSF",
-        "2ndFlrSF",
-        "LowQualFinSF",
-        "GrLivArea",
-        "BsmtFullBath",
-        "BsmtHalfBath",
-        "FullBath",
-        "HalfBath",
-        "BedroomAbvGr",
-        "KitchenAbvGr",
-        "KitchenQual",
-        "TotRmsAbvGrd",
-        "Functional",
-        "Fireplaces",
-        "FireplaceQu",
-        "GarageType",
-        "GarageYrBlt",
-        "GarageFinish",
-        "GarageCars",
-        "GarageArea",
-        "GarageQual",
-        "GarageCond",
-        "PavedDrive",
-        "WoodDeckSF",
-        "OpenPorchSF",
-        "EnclosedPorch",
-        "3SsnPorch",
-        "ScreenPorch",
-        "PoolArea",
-        "PoolQC",
-        "Fence",
-        "MiscFeature",
-        "MiscVal",
-        "MoSold",
-        "YrSold",
-        "SaleType",
-        "SaleCondition",
-    ]
+    generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
 
-    categorical_features = [
-        "MSZoning",
-        "Street",
-        "Alley",
-        "LotShape",
-        "LandContour",
-        "Utilities",
-        "LotConfig",
-        "LandSlope",
-        "Neighborhood",
-        "Condition1",
-        "Condition2",
-        "BldgType",
-        "HouseStyle",
-        "RoofStyle",
-        "RoofMatl",
-        "Exterior1st",
-        "Exterior2nd",
-        "MasVnrType",
-        "ExterQual",
-        "ExterCond",
-        "Foundation",
+    predictive_features = [
+        "FullBath",
+        "1stFlrSF",
+        "TotalBsmtSF",
         "BsmtQual",
-        "BsmtCond",
-        "BsmtExposure",
-        "BsmtFinType1",
-        "BsmtFinType2",
-        "Heating",
-        "HeatingQC",
-        "CentralAir",
-        "Electrical",
+        "GarageArea",
+        "GarageCars",
         "KitchenQual",
-        "Functional",
-        "FireplaceQu",
-        "GarageType",
-        "GarageFinish",
-        "GarageQual",
-        "GarageCond",
-        "PavedDrive",
-        "PoolQC",
-        "Fence",
-        "MiscFeature",
-        "SaleType",
-        "SaleCondition",
+        "ExterQual",
+        "GrLivArea",
+        "OverallQual",
     ]
 
     ground_truth = df["SalePrice"]
+
     df = df[predictive_features]
+
     # imputing missing values
     for col in predictive_features:
-        if col in categorical_features:
-            df.loc[:, col] = df.loc[:, col].fillna("None")
-        else:
-            df.loc[:, col] = df.loc[:, col].fillna(0)
+        df.loc[:, col] = df.loc[:, col].fillna("None")
 
-    # one-hot encode
-    df = pandas.get_dummies(df, columns=categorical_features)
+    # converting categorical values from certain features into numerical
+    for col in ["BsmtQual", "KitchenQual", "ExterQual"]:
+        df.loc[:, col] = df[col].map(generic)
 
-    # filling in any missing encoded columns with 0s
-    for col in train_encoded_columns:
-        if col not in df.columns:
-            df[col] = numpy.zeros(df.shape[0])
+    df_ss = standard_scaler.transform(df)
 
-    # restricting columns to only be final list of encoded columns
-    df = df[train_encoded_columns]
-
-    df["prediction"] = lasso_model.predict(df)
-    df["ground_truth"] = ground_truth
+    df.loc[:, "prediction"] = lasso_model.predict(df_ss)
+    df.loc[:, "ground_truth"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
-    return df.to_dict(orient="records")
+    yield df.to_dict(orient="records")
 
 
 # modelop.metrics
