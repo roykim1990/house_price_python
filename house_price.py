@@ -28,8 +28,10 @@ def action(data):
         else:
             df = pandas.DataFrame([data])
 
+    # dictionary to convert values in certain columns
     generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
 
+    # the only features that the model trained on
     predictive_features = [
         "FullBath",
         "1stFlrSF",
@@ -43,8 +45,10 @@ def action(data):
         "OverallQual",
     ]
 
+    # set aside ground truth to later re-append to dataframe
     ground_truth = df["SalePrice"]
 
+    # limiting features to just the ones the model needs
     df = df[predictive_features]
 
     # imputing missing values
@@ -55,9 +59,11 @@ def action(data):
     for col in ["BsmtQual", "KitchenQual", "ExterQual"]:
         df.loc[:, col] = df[col].map(generic)
 
+    # scale inputs
     df_ss = standard_scaler.transform(df)
 
-    df.loc[:, "prediction"] = lasso_model.predict(df_ss)
+    # generate predictions and rename columns
+    df.loc[:, "prediction"] = numpy.round(numpy.expm1(lasso_model.predict(df_ss)), 2)
     df.loc[:, "ground_truth"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
