@@ -3,87 +3,37 @@
   "type": "record",
   "fields": [
     {
-      "name": "FullBath",
+      "name": "Id",
       "type": "int",
       "dataClass": "numerical",
-      "role": "predictor",
+      "role": "non-predictor",
       "protectedClass": false,
-      "driftCandidate": true,
+      "driftCandidate": false,
       "specialValues": [],
       "scoringOptional": false
     },
     {
-      "name": "1stFlrSF",
+      "name": "prediction",
+      "type": "float",
+      "dataClass": "numerical",
+      "role": "score",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": true
+    },
+    {
+      "name": "ground_truth",
       "type": "int",
       "dataClass": "numerical",
-      "role": "predictor",
+      "role": "label",
       "protectedClass": false,
       "driftCandidate": true,
       "specialValues": [],
-      "scoringOptional": false
+      "scoringOptional": true
     },
     {
-      "name": "TotalBsmtSF",
-      "type": "int",
-      "dataClass": "numerical",
-      "role": "predictor",
-      "protectedClass": false,
-      "driftCandidate": true,
-      "specialValues": [],
-      "scoringOptional": false
-    },
-    {
-      "name": "BsmtQual",
-      "type": "string",
-      "dataClass": "categorical",
-      "role": "predictor",
-      "protectedClass": false,
-      "driftCandidate": true,
-      "specialValues": [],
-      "scoringOptional": false
-    },
-    {
-      "name": "GarageArea",
-      "type": "int",
-      "dataClass": "numerical",
-      "role": "predictor",
-      "protectedClass": false,
-      "driftCandidate": true,
-      "specialValues": [],
-      "scoringOptional": false
-    },
-    {
-      "name": "GarageCars",
-      "type": "int",
-      "dataClass": "numerical",
-      "role": "predictor",
-      "protectedClass": false,
-      "driftCandidate": true,
-      "specialValues": [],
-      "scoringOptional": false
-    },
-    {
-      "name": "KitchenQual",
-      "type": "string",
-      "dataClass": "categorical",
-      "role": "predictor",
-      "protectedClass": false,
-      "driftCandidate": true,
-      "specialValues": [],
-      "scoringOptional": false
-    },
-    {
-      "name": "ExterQual",
-      "type": "string",
-      "dataClass": "categorical",
-      "role": "predictor",
-      "protectedClass": false,
-      "driftCandidate": true,
-      "specialValues": [],
-      "scoringOptional": false
-    },
-    {
-      "name": "GrLivArea",
+      "name": "eOverallQual_TotalSF",
       "type": "int",
       "dataClass": "numerical",
       "role": "predictor",
@@ -103,24 +53,184 @@
       "scoringOptional": false
     },
     {
-      "name": "ground_truth",
+      "name": "eTotalSF",
       "type": "int",
       "dataClass": "numerical",
-      "role": "label",
+      "role": "predictor",
       "protectedClass": false,
       "driftCandidate": true,
       "specialValues": [],
-      "scoringOptional": true
+      "scoringOptional": false
     },
     {
-      "name": "prediction",
-      "type": "float",
+      "name": "GrLivArea",
+      "type": "int",
       "dataClass": "numerical",
-      "role": "score",
+      "role": "predictor",
       "protectedClass": false,
       "driftCandidate": true,
       "specialValues": [],
-      "scoringOptional": true
+      "scoringOptional": false
+    },
+    {
+      "name": "ExterQual",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "KitchenQual",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageCars",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "eTotalBathrooms",
+      "type": "float",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "BsmtQual",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageArea",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "TotalBsmtSF",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "GarageFinish",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "YearBuilt",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "eHasGarage",
+      "type": "boolean",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "TotRmsAbvGrd",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "eHasRemodeling",
+      "type": "boolean",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "FireplaceQu",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "MasVnrArea",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "eHasFireplace",
+      "type": "boolean",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "eHasBsmt",
+      "type": "boolean",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
     }
   ]
 }
