@@ -1,13 +1,12 @@
 # house_price_python
 
-A Lasso Linear Regression Python model to predict house price.
-The model was trained on the Ames Housing Data dataset.
+A sample data science project that uses a Lasso Linear Regression Python model to predict house price from the Ames Housing Data dataset. Specifically, this example is used to show the capabilities of ModelOp Center.
 
 
 Assets:
 - `lasso.pickle` is the trained model artifact.
-- `train_encoded_columns` is a binarized list of final column names that the model will accept.
-- `standard_scaler` is a `sklearn.preprocessing.StandardScaler` transformer object that is fit on the training data.  
+- `train_encoded_columns.pickle` is a binarized list of final column names that the model will accept.
+- `standard_scaler.pickle` is a `sklearn.preprocessing.StandardScaler` transformer object that is fit on the training data.  
 - Sample inputs to the scoring function are included (`df_baseline.json` and `df_sample.json`)
 
 The metrics function expects a DataFrame with at least the following two columns: `prediction` and `ground_truth` (actual values).
