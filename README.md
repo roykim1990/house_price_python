@@ -1,13 +1,18 @@
 # house_price_python
+A sample data science project that uses a Lasso Linear Regression Python model to predict house price from the Ames Housing Data dataset. Specifically, this example is used to demonstrate the creating of ModelOp Center-compliant code.
 
-A sample data science project that uses a Lasso Linear Regression Python model to predict house price from the Ames Housing Data dataset. Specifically, this example is used to show the how to make ModelOp Center-compliant code.
-
-Assets:
+## Assets:
 - `lasso.pickle` is the trained model artifact.
 - `train_encoded_columns.pickle` is a binarized list of final column names that the model will accept.
-- `standard_scaler.pickle` is a `sklearn.preprocessing.StandardScaler` transformer object that is fit on the training data.  
+- `standard_scaler.pickle` is a `sklearn.preprocessing.StandardScaler` transformer object that is fit on the training data.
 - The datasets used for **scoring** are `df_baseline.json` and `df_sample.json`. These datasets represents raw data that would first be run into a batch scoring job.
 - The datasets used for **metrics** are `df_baseline_scored.json` and `df_sample_scored.json`. These datasets represent data that has gone through the scoring process, meaning that the data is already transformed into model-ready input and that the predictions for each row are stored in the `prediction` column. Furthermore, the `SalePrice` column is renamed to `ground_truth`, as the metrics job requires those columns be named specifically.
+- The `df_baseline_scored_input_schema.avsc` is an AVRO-compliant json file that details the input schema, as needed for ModelOp Center functionality
+- The `df_sample_scored_input_schema.avsc` is the schema file for the sample dataset.
+
+## Directions:
+1. For a **scoring** job, please use the `df_baseline.json` and/or the `df_sample.json` files. The output is a dictionary of records that has the input data transformed, as well as the prediction for each row appended.
+2. For a **metrics** job, please use the `df_baseline_scored.json` and/or the `df_sample_scored.json` files. The output is a dictionary of the `R2`, `RMSE`, and `MAE` metrics for dataset entered.
 
 The input data to the **scoring** job is `df_sample.json`, which is a JSONS file (one-line JSON records). Here are the first three records:
 ```json
