@@ -3,6 +3,7 @@ import pickle
 import numpy
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
+
 # modelop.init
 def begin():
     global lasso_model
@@ -19,14 +20,8 @@ def begin():
 
 # modelop.score
 def action(data):
-    # converting data into dataframe with some checks
-    if isinstance(data, pandas.DataFrame):
-        df = data
-    else:
-        if isinstance(data, list):
-            df = pandas.DataFrame(data)
-        else:
-            df = pandas.DataFrame([data])
+    # turning data into a dataframe
+    df = pandas.DataFrame([data])
 
     # set aside ground truth to later re-append to dataframe
     ground_truth = df["SalePrice"]
@@ -77,25 +72,25 @@ def action(data):
     df.loc[:, "ground_truth"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
-    yield df.to_dict(orient="records")
+    # for local testing, we use "return" to visualize the output
+    # yield df.to_dict(orient='records')
+    return df.to_dict(orient="records")
 
 
 # modelop.metrics
 def metrics(data):
-    # converting data into dataframe with some checks
-    if isinstance(data, pandas.DataFrame):
-        df = data
-    else:
-        if isinstance(data, list):
-            df = pandas.DataFrame(data)
-        else:
-            df = pandas.DataFrame([data])
+    # converting data into dataframe
+    df = pandas.DataFrame(data)
 
     y = df["ground_truth"]
     y_preds = df["prediction"]
 
-    yield {
+    output_metrics = {
         "MAE": mean_absolute_error(y, y_preds),
         "RMSE": mean_squared_error(y, y_preds) ** 0.5,
         "R2": r2_score(y, y_preds),
     }
+
+    # MOC expects the metrics function to be a "yield" function
+    # yield output_metrics
+    return output_metrics
