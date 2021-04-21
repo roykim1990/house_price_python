@@ -7,7 +7,7 @@ A sample data science project that uses a Lasso Linear Regression Python model t
 - `standard_scaler.pickle` is a `sklearn.preprocessing.StandardScaler` transformer object that is fit on the training data.
 - The datasets used for **scoring** are `df_baseline.json` and `df_sample.json`. These datasets represents raw data that would first be run into a batch scoring job.
 - The datasets used for **metrics** are `df_baseline_scored.json` and `df_sample_scored.json`. These datasets represent data that has gone through the scoring process, meaning that the data is already transformed into model-ready input and that the predictions for each row are stored in the `prediction` column. Furthermore, the `SalePrice` column is renamed to `ground_truth`, as the metrics job requires those columns be named specifically.
-- The `df_baseline_scored_input_schema.avsc` is an AVRO-compliant json file that details the input schema, as needed for ModelOp Center functionality
+- The `df_baseline_scored_input_schema.avsc` is an AVRO-compliant json file that details the input schema, as needed for ModelOp Center functionality.
 - The `df_sample_scored_input_schema.avsc` is the schema file for the sample dataset.
 
 ## Directions:
