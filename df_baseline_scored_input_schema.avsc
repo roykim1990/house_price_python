@@ -6,7 +6,7 @@
       "name": "Id",
       "type": "int",
       "dataClass": "numerical",
-      "role": "non-predictor",
+      "role": "identifier",
       "protectedClass": false,
       "driftCandidate": false,
       "specialValues": [],
