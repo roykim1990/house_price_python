@@ -1,5 +1,5 @@
 {
-  "name": "df_baseline_scored_input_schema.avsc",
+  "name": "input_schema.avsc",
   "type": "record",
   "fields": [
     {
