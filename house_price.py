@@ -163,7 +163,7 @@ def action(data):
 
     # generate predictions and rename columns
     df.loc[:, "prediction"] = numpy.round(numpy.expm1(lasso_model.predict(df_ss)), 2)
-    df.loc[:, "ground_truth"] = ground_truth
+    df.loc[:, "SalePrice"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
     # for local testing, we use "return" to visualize the output
@@ -176,7 +176,7 @@ def metrics(data):
     # converting data into dataframe
     df = pandas.DataFrame(data)
 
-    y = df["ground_truth"]
+    y = df["SalePrice"]
     y_preds = df["prediction"]
 
     output_metrics = {

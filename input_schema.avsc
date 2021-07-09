@@ -23,14 +23,14 @@
       "scoringOptional": true
     },
     {
-      "name": "ground_truth",
+      "name": "SalePrice",
       "type": "int",
       "dataClass": "numerical",
       "role": "label",
       "protectedClass": false,
       "driftCandidate": true,
       "specialValues": [],
-      "scoringOptional": true
+      "scoringOptional": false
     },
     {
       "name": "eOverallQual_TotalSF",
