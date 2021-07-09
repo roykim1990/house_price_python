@@ -1,3 +1,6 @@
+# modelop.schema.0: input_schema.avsc
+# modelop.slot.1: in-use
+
 import pandas
 import pickle
 import numpy

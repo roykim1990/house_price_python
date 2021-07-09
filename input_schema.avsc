@@ -1,12 +1,12 @@
 {
-  "name": "df_sample_scored_input_schema.avsc",
+  "name": "input_schema.avsc",
   "type": "record",
   "fields": [
     {
       "name": "Id",
       "type": "int",
       "dataClass": "numerical",
-      "role": "non-predictor",
+      "role": "identifier",
       "protectedClass": false,
       "driftCandidate": false,
       "specialValues": [],
