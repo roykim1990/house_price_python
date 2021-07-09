@@ -167,8 +167,8 @@ def action(data):
 
     # MOC expects the action function to be a "yield" function
     # for local testing, we use "return" to visualize the output
-    # yield df.to_dict(orient='records')
-    return df.to_dict(orient="records")
+    yield df.to_dict(orient='records')
+    # return df.to_dict(orient="records")
 
 
 # modelop.metrics
@@ -186,5 +186,5 @@ def metrics(data):
     }
 
     # MOC expects the metrics function to be a "yield" function
-    # yield output_metrics
-    return output_metrics
+    yield output_metrics
+    # return output_metrics
