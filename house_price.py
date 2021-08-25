@@ -126,7 +126,7 @@ def train(data):
     pickle.dump(lasso, open("lasso.pickle", "wb"))
 
     logger.info("Training job complete!")
-    yield
+    pass
 
 
 # modelop.score
