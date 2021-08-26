@@ -23,7 +23,7 @@
       "scoringOptional": true
     },
     {
-      "name": "ground_truth",
+      "name": "SalePrice",
       "type": "int",
       "dataClass": "numerical",
       "role": "label",
