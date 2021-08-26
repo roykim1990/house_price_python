@@ -123,7 +123,7 @@ def metrics(data):
 def train(data):
     
     # Load data
-    training_data = pandas.DataFrame(data).copy()
+    training_data = pandas.DataFrame(data, index=[0]).copy()
 
     print(training_data[["BsmtQual", "KitchenQual", "ExterQual"]].isna().sum())
     # Set aside ground truth to later re-append to dataframe
