@@ -119,7 +119,7 @@ def metrics(data):
 # modelop.train
 def train(data):
     # load data
-    training_data = pandas.DataFrame(data)
+    training_data = pandas.DataFrame(data, index=[0])
 
     # set aside ground truth to later re-append to dataframe
     y_train = training_data["SalePrice"]
