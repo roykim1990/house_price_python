@@ -33,7 +33,7 @@
       "scoringOptional": true
     },
     {
-      "name": "eOverallQual_TotalSF",
+      "name": "OverallQual_TotalSF",
       "type": "int",
       "dataClass": "numerical",
       "role": "predictor",
