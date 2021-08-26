@@ -30,6 +30,92 @@ def begin():
     )
 
 
+# modelop.score
+def action(data):
+    # turning data into a dataframe
+    logger.info("Loading in data into a pandas.DataFrame")
+    df = pandas.DataFrame([data])
+
+    # set aside ground truth to later re-append to dataframe
+    ground_truth = df["SalePrice"]
+
+    # dictionaries to convert values in certain columns
+    generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
+    fireplace_quality = {"Ex": 5, "Gd": 4, "TA": 3, "Fa": 2, "Po": 1, "None": 0}
+    garage_finish = {"Fin": 3, "RFn": 2, "Unf": 1, "None": 0}
+
+    # imputations
+    logger.info("Conforming input dataset to be model-ready")
+    df.loc[:, "GarageYrBlt"] = df.loc[:, "GarageYrBlt"].fillna(df["YearBuilt"])
+    for col in ["GarageFinish", "BsmtQual", "FireplaceQu"]:
+        df.loc[:, col] = df.loc[:, col].fillna("None")
+    # the rest of NaNs will be filled with 0s - end model only uses numerical features
+    for col in df.columns:
+        df[col] = df[col].fillna(0)
+
+    # converting categorical values from certain features into numerical
+    for col in ["BsmtQual", "KitchenQual", "ExterQual"]:
+        df.loc[:, col] = df[col].map(generic)
+    df.loc[:, "GarageFinish"] = df["GarageFinish"].map(garage_finish)
+    df.loc[:, "FireplaceQu"] = df["FireplaceQu"].map(fireplace_quality)
+
+    # feature engineering
+    f = lambda x: bool(1) if x > 0 else bool(0)
+    df["eHasPool"] = df["PoolArea"].apply(f)
+    df["eHasGarage"] = df["GarageArea"].apply(f)
+    df["eHasBsmt"] = df["TotalBsmtSF"].apply(f)
+    df["eHasFireplace"] = df["Fireplaces"].apply(f)
+    df["eHasRemodeling"] = df["YearRemodAdd"] - df["YearBuilt"] > 0
+    df["eTotalSF"] = df["TotalBsmtSF"] + df["1stFlrSF"] + df["2ndFlrSF"]
+    df["eTotalBathrooms"] = (
+        df["FullBath"]
+        + (0.5 * df["HalfBath"])
+        + df["BsmtFullBath"]
+        + (0.5 * df["BsmtHalfBath"])
+    )
+    df["eOverallQual_TotalSF"] = df["OverallQual"] * df["eTotalSF"]
+
+    # limiting features to just the ones the model needs
+    logger.info("Selecting columns that model is expecting")
+    df = df[train_encoded_columns]
+
+    # scale inputs
+    logger.info("Scaling data with pickled standard scaler")
+    df_ss = standard_scaler.transform(df)
+
+    # generate predictions and rename columns
+    logger.info("Generating predictions with the model and appending onto DataFrame")
+    df.loc[:, "prediction"] = numpy.round(numpy.expm1(lasso_model.predict(df_ss)), 2)
+    df.loc[:, "SalePrice"] = ground_truth
+
+    # MOC expects the action function to be a "yield" function
+    # for local testing, we use "return" to visualize the output
+    logger.info("Scoring job complete!")
+    yield df.to_dict(orient="records")
+
+
+# modelop.metrics
+def metrics(data):
+    # converting data into dataframe
+    logger.info("Loading in data into a pandas.DataFrame")
+    df = pandas.DataFrame(data)
+
+    logger.info("Grabbing relevant columsn to calculate metrics")
+    y = df["SalePrice"]
+    y_preds = df["prediction"]
+
+    logger.info("Computing MAE, RMSE, R2 scores")
+    output_metrics = {
+        "MAE": mean_absolute_error(y, y_preds),
+        "RMSE": mean_squared_error(y, y_preds) ** 0.5,
+        "R2": r2_score(y, y_preds),
+    }
+
+    # MOC expects the metrics function to be a "yield" function
+    logger.info("Metrics job complete!")
+    yield output_metrics
+
+
 # modelop.train
 def train(data):
     # load data
@@ -123,95 +209,10 @@ def train(data):
     lasso = LassoCV(max_iter=1000)
     lasso.fit(X_train_ss, y_train_log)
     logger.info("Pickling LASSO model that was trained on the training dataset")
-    pickle.dump(lasso, open("lasso.pickle", "wb"))
+
+    # pickle file should be written to outputDir    
+    with open("outputDir/lasso.pickle", "wb") as f:
+        pickle.dump(lasso, f)
 
     logger.info("Training job complete!")
     pass
-
-
-# modelop.score
-def action(data):
-    # turning data into a dataframe
-    logger.info("Loading in data into a pandas.DataFrame")
-    df = pandas.DataFrame([data])
-
-    # set aside ground truth to later re-append to dataframe
-    ground_truth = df["SalePrice"]
-
-    # dictionaries to convert values in certain columns
-    generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
-    fireplace_quality = {"Ex": 5, "Gd": 4, "TA": 3, "Fa": 2, "Po": 1, "None": 0}
-    garage_finish = {"Fin": 3, "RFn": 2, "Unf": 1, "None": 0}
-
-    # imputations
-    logger.info("Conforming input dataset to be model-ready")
-    df.loc[:, "GarageYrBlt"] = df.loc[:, "GarageYrBlt"].fillna(df["YearBuilt"])
-    for col in ["GarageFinish", "BsmtQual", "FireplaceQu"]:
-        df.loc[:, col] = df.loc[:, col].fillna("None")
-    # the rest of NaNs will be filled with 0s - end model only uses numerical features
-    for col in df.columns:
-        df[col] = df[col].fillna(0)
-
-    # converting categorical values from certain features into numerical
-    for col in ["BsmtQual", "KitchenQual", "ExterQual"]:
-        df.loc[:, col] = df[col].map(generic)
-    df.loc[:, "GarageFinish"] = df["GarageFinish"].map(garage_finish)
-    df.loc[:, "FireplaceQu"] = df["FireplaceQu"].map(fireplace_quality)
-
-    # feature engineering
-    f = lambda x: bool(1) if x > 0 else bool(0)
-    df["eHasPool"] = df["PoolArea"].apply(f)
-    df["eHasGarage"] = df["GarageArea"].apply(f)
-    df["eHasBsmt"] = df["TotalBsmtSF"].apply(f)
-    df["eHasFireplace"] = df["Fireplaces"].apply(f)
-    df["eHasRemodeling"] = df["YearRemodAdd"] - df["YearBuilt"] > 0
-    df["eTotalSF"] = df["TotalBsmtSF"] + df["1stFlrSF"] + df["2ndFlrSF"]
-    df["eTotalBathrooms"] = (
-        df["FullBath"]
-        + (0.5 * df["HalfBath"])
-        + df["BsmtFullBath"]
-        + (0.5 * df["BsmtHalfBath"])
-    )
-    df["eOverallQual_TotalSF"] = df["OverallQual"] * df["eTotalSF"]
-
-    # limiting features to just the ones the model needs
-    logger.info("Selecting columns that model is expecting")
-    df = df[train_encoded_columns]
-
-    # scale inputs
-    logger.info("Scaling data with pickled standard scaler")
-    df_ss = standard_scaler.transform(df)
-
-    # generate predictions and rename columns
-    logger.info("Generating predictions with the model and appending onto DataFrame")
-    df.loc[:, "prediction"] = numpy.round(numpy.expm1(lasso_model.predict(df_ss)), 2)
-    df.loc[:, "SalePrice"] = ground_truth
-
-    # MOC expects the action function to be a "yield" function
-    # for local testing, we use "return" to visualize the output
-    logger.info("Scoring job complete!")
-    yield df.to_dict(orient="records")
-    # return df.to_dict(orient="records")
-
-
-# modelop.metrics
-def metrics(data):
-    # converting data into dataframe
-    logger.info("Loading in data into a pandas.DataFrame")
-    df = pandas.DataFrame(data)
-
-    logger.info("Grabbing relevant columsn to calculate metrics")
-    y = df["SalePrice"]
-    y_preds = df["prediction"]
-
-    logger.info("Computing MAE, RMSE, R2 scores")
-    output_metrics = {
-        "MAE": mean_absolute_error(y, y_preds),
-        "RMSE": mean_squared_error(y, y_preds) ** 0.5,
-        "R2": r2_score(y, y_preds),
-    }
-
-    # MOC expects the metrics function to be a "yield" function
-    logger.info("Metrics job complete!")
-    yield output_metrics
-    # return output_metrics
