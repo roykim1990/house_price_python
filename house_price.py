@@ -1,4 +1,4 @@
-# modelop.schema.0: input_schema.avsc
+# modelop.slot.0: in-use
 # modelop.slot.1: in-use
 
 import pandas
