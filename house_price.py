@@ -34,10 +34,10 @@ def begin():
 def action(data):
     # turning data into a dataframe
     logger.info("Loading in data into a pandas.DataFrame")
-    df = pandas.DataFrame([data])
+    input_data = pandas.DataFrame([data])
 
     # set aside ground truth to later re-append to dataframe
-    ground_truth = df["SalePrice"]
+    ground_truth = input_data["SalePrice"]
 
     # dictionaries to convert values in certain columns
     generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
@@ -46,63 +46,63 @@ def action(data):
 
     # imputations
     logger.info("Conforming input dataset to be model-ready")
-    df.loc[:, "GarageYrBlt"] = df.loc[:, "GarageYrBlt"].fillna(df["YearBuilt"])
+    input_data.loc[:, "GarageYrBlt"] = input_data.loc[:, "GarageYrBlt"].fillna(input_data["YearBuilt"])
     for col in ["GarageFinish", "BsmtQual", "FireplaceQu"]:
-        df.loc[:, col] = df.loc[:, col].fillna("None")
+        input_data.loc[:, col] = input_data.loc[:, col].fillna("None")
     # the rest of NaNs will be filled with 0s - end model only uses numerical features
-    for col in df.columns:
-        df[col] = df[col].fillna(0)
+    for col in input_data.columns:
+        input_data[col] = input_data[col].fillna(0)
 
     # converting categorical values from certain features into numerical
     for col in ["BsmtQual", "KitchenQual", "ExterQual"]:
-        df.loc[:, col] = df[col].map(generic)
-    df.loc[:, "GarageFinish"] = df["GarageFinish"].map(garage_finish)
-    df.loc[:, "FireplaceQu"] = df["FireplaceQu"].map(fireplace_quality)
+        input_data.loc[:, col] = input_data[col].map(generic)
+    input_data.loc[:, "GarageFinish"] = input_data["GarageFinish"].map(garage_finish)
+    input_data.loc[:, "FireplaceQu"] = input_data["FireplaceQu"].map(fireplace_quality)
 
     # feature engineering
     f = lambda x: bool(1) if x > 0 else bool(0)
-    df["eHasPool"] = df["PoolArea"].apply(f)
-    df["eHasGarage"] = df["GarageArea"].apply(f)
-    df["eHasBsmt"] = df["TotalBsmtSF"].apply(f)
-    df["eHasFireplace"] = df["Fireplaces"].apply(f)
-    df["eHasRemodeling"] = df["YearRemodAdd"] - df["YearBuilt"] > 0
-    df["eTotalSF"] = df["TotalBsmtSF"] + df["1stFlrSF"] + df["2ndFlrSF"]
-    df["eTotalBathrooms"] = (
-        df["FullBath"]
-        + (0.5 * df["HalfBath"])
-        + df["BsmtFullBath"]
-        + (0.5 * df["BsmtHalfBath"])
+    input_data["eHasPool"] = input_data["PoolArea"].apply(f)
+    input_data["eHasGarage"] = input_data["GarageArea"].apply(f)
+    input_data["eHasBsmt"] = input_data["TotalBsmtSF"].apply(f)
+    input_data["eHasFireplace"] = input_data["Fireplaces"].apply(f)
+    input_data["eHasRemodeling"] = input_data["YearRemodAdd"] - input_data["YearBuilt"] > 0
+    input_data["eTotalSF"] = input_data["TotalBsmtSF"] + input_data["1stFlrSF"] + input_data["2ndFlrSF"]
+    input_data["eTotalBathrooms"] = (
+        input_data["FullBath"]
+        + (0.5 * input_data["HalfBath"])
+        + input_data["BsmtFullBath"]
+        + (0.5 * input_data["BsmtHalfBath"])
     )
-    df["eOverallQual_TotalSF"] = df["OverallQual"] * df["eTotalSF"]
+    input_data["eOverallQual_TotalSF"] = input_data["OverallQual"] * input_data["eTotalSF"]
 
     # limiting features to just the ones the model needs
     logger.info("Selecting columns that model is expecting")
-    df = df[train_encoded_columns]
+    input_data = input_data[train_encoded_columns]
 
     # scale inputs
     logger.info("Scaling data with pickled standard scaler")
-    df_ss = standard_scaler.transform(df)
+    df_ss = standard_scaler.transform(input_data)
 
     # generate predictions and rename columns
     logger.info("Generating predictions with the model and appending onto DataFrame")
-    df.loc[:, "prediction"] = numpy.round(numpy.expm1(lasso_model.predict(df_ss)), 2)
-    df.loc[:, "SalePrice"] = ground_truth
+    input_data.loc[:, "prediction"] = numpy.round(numpy.expm1(lasso_model.predict(df_ss)), 2)
+    input_data.loc[:, "SalePrice"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
     # for local testing, we use "return" to visualize the output
     logger.info("Scoring job complete!")
-    yield df.to_dict(orient="records")
+    yield input_data.to_dict(orient="records")
 
 
 # modelop.metrics
 def metrics(data):
     # converting data into dataframe
     logger.info("Loading in data into a pandas.DataFrame")
-    df = pandas.DataFrame(data)
+    metrics_data = pandas.DataFrame(data)
 
     logger.info("Grabbing relevant columsn to calculate metrics")
-    y = df["SalePrice"]
-    y_preds = df["prediction"]
+    y = metrics_data["SalePrice"]
+    y_preds = metrics_data["prediction"]
 
     logger.info("Computing MAE, RMSE, R2 scores")
     output_metrics = {
@@ -119,10 +119,10 @@ def metrics(data):
 # modelop.train
 def train(data):
     # load data
-    df = pandas.DataFrame(data)
+    training_data = pandas.DataFrame(data)
 
     # set aside ground truth to later re-append to dataframe
-    y_train = df["SalePrice"]
+    y_train = training_data["SalePrice"]
 
     # dictionaries to convert values in certain columns
     generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
@@ -131,36 +131,36 @@ def train(data):
 
     # imputations
     logger.info("Imputing Nulls")
-    df.loc[:, "GarageYrBlt"] = df.loc[:, "GarageYrBlt"].fillna(df["YearBuilt"])
+    training_data.loc[:, "GarageYrBlt"] = training_data.loc[:, "GarageYrBlt"].fillna(training_data["YearBuilt"])
     for col in ["GarageFinish", "BsmtQual", "FireplaceQu"]:
-        df.loc[:, col] = df.loc[:, col].fillna("None")
+        training_data.loc[:, col] = training_data.loc[:, col].fillna("None")
     # the rest of NaNs will be filled with 0s - end model only uses numerical features
-    for col in df.columns:
-        df[col] = df[col].fillna(0)
+    for col in training_data.columns:
+        training_data[col] = training_data[col].fillna(0)
 
     # converting categorical values from certain features into numerical
     logger.info("Converting categorical values to numerical values")
     for col in ["BsmtQual", "KitchenQual", "ExterQual"]:
-        df.loc[:, col] = df[col].map(generic)
-    df.loc[:, "GarageFinish"] = df["GarageFinish"].map(garage_finish)
-    df.loc[:, "FireplaceQu"] = df["FireplaceQu"].map(fireplace_quality)
+        training_data.loc[:, col] = training_data[col].map(generic)
+    training_data.loc[:, "GarageFinish"] = training_data["GarageFinish"].map(garage_finish)
+    training_data.loc[:, "FireplaceQu"] = training_data["FireplaceQu"].map(fireplace_quality)
 
     # feature engineering
     logger.info("Creating new features with feature engineering")
     f = lambda x: 1 if x > 0 else 0
-    df["eHasPool"] = df["PoolArea"].apply(f)
-    df["eHasGarage"] = df["GarageArea"].apply(f)
-    df["eHasBsmt"] = df["TotalBsmtSF"].apply(f)
-    df["eHasFireplace"] = df["Fireplaces"].apply(f)
-    df["eHasRemodeling"] = (df["YearRemodAdd"] - df["YearBuilt"] > 0).astype(int)
-    df["eTotalSF"] = df["TotalBsmtSF"] + df["1stFlrSF"] + df["2ndFlrSF"]
-    df["eTotalBathrooms"] = (
-        df["FullBath"]
-        + (0.5 * df["HalfBath"])
-        + df["BsmtFullBath"]
-        + (0.5 * df["BsmtHalfBath"])
+    training_data["eHasPool"] = training_data["PoolArea"].apply(f)
+    training_data["eHasGarage"] = training_data["GarageArea"].apply(f)
+    training_data["eHasBsmt"] = training_data["TotalBsmtSF"].apply(f)
+    training_data["eHasFireplace"] = training_data["Fireplaces"].apply(f)
+    training_data["eHasRemodeling"] = (training_data["YearRemodAdd"] - training_data["YearBuilt"] > 0).astype(int)
+    training_data["eTotalSF"] = training_data["TotalBsmtSF"] + training_data["1stFlrSF"] + training_data["2ndFlrSF"]
+    training_data["eTotalBathrooms"] = (
+        training_data["FullBath"]
+        + (0.5 * training_data["HalfBath"])
+        + training_data["BsmtFullBath"]
+        + (0.5 * training_data["BsmtHalfBath"])
     )
-    df["eOverallQual_TotalSF"] = df["OverallQual"] * df["eTotalSF"]
+    training_data["eOverallQual_TotalSF"] = training_data["OverallQual"] * training_data["eTotalSF"]
 
     # final list of encoded columns
     train_encoded_columns = [
@@ -191,11 +191,11 @@ def train(data):
     pickle.dump(train_encoded_columns, open("train_encoded_columns.pickle", "wb"))
 
     # choosing only the final list of encoded columns
-    X_train = df[train_encoded_columns]
+    X_train = training_data[train_encoded_columns]
 
     # standard scale data and pickle scaler
     standard_scaler = StandardScaler()
-    X_train_ss = standard_scaler.fit_transform(X_train)
+    X_train_ss = standard_scaler.fit_transform(numpy.array(X_train))
     logger.info(
         "Pickling standard scaler object that was trained on the training dataset"
     )
