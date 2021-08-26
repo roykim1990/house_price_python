@@ -122,8 +122,15 @@ def metrics(data):
 # modelop.train
 def train(data):
     
+    logger.info("data is of type: %s", type(data))
+
+    try:
+        logger.info("data is of shape: %s", data.shape)
+    except:
+        logger.info("data.shape failed")
+
     # Load data
-    training_data = pandas.DataFrame(data, index=[0]).copy()
+    training_data = pandas.DataFrame(data).copy()
 
     logger.info("training_data is of shape: %s", training_data.shape)
 
