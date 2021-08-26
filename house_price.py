@@ -125,7 +125,10 @@ def train(data):
     # Load data
     training_data = pandas.DataFrame(data, index=[0]).copy()
 
-    print(training_data[["BsmtQual", "KitchenQual", "ExterQual"]].isna().sum())
+    logger.info("training_data is of shape: %s", training_data.shape)
+
+    print(training_data[["BsmtQual", "KitchenQual", "ExterQual"]].isna().sum(), flush=True)
+    
     # Set aside ground truth to later re-append to dataframe
     y_train = training_data["SalePrice"]
 
