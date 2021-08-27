@@ -1,5 +1,7 @@
 # modelop.slot.0: in-use
 # modelop.slot.1: in-use
+# modelop.slot.3: in-use
+# modelop.slot.5: in-use
 
 import pandas
 import pickle
