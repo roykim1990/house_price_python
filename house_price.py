@@ -1,7 +1,6 @@
 # modelop.slot.0: in-use
 # modelop.slot.1: in-use
-# modelop.slot.3: in-use
-# modelop.slot.5: in-use
+
 
 import pandas
 import pickle
@@ -13,6 +12,7 @@ from sklearn.preprocessing import StandardScaler
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level="INFO")
+
 
 # modelop.init
 def begin():
@@ -37,7 +37,7 @@ def begin():
 def action(data):
     
     # Turning data into a dataframe
-    logger.info("Loading in data into a pandas.DataFrame")
+    logger.info("Loading input record into a pandas.DataFrame")
     input_data = pandas.DataFrame([data])
 
     # Set aside ground truth to later re-append to dataframe
@@ -93,19 +93,15 @@ def action(data):
     input_data.loc[:, "SalePrice"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
-    # For local testing, we use "return" to visualize the output
-    logger.info("Scoring job complete!")
     yield input_data.to_dict(orient="records")
 
 
 # modelop.metrics
-def metrics(data):
+def metrics(metrics_data):
     
-    # Converting data into dataframe
-    logger.info("Loading in data into a pandas.DataFrame")
-    metrics_data = pandas.DataFrame(data)
+    logger.info("metrics_data is of shape: %s", metrics_data.shape)
 
-    logger.info("Grabbing relevant columsn to calculate metrics")
+    logger.info("Grabbing relevant columns to calculate metrics")
     y = metrics_data["SalePrice"]
     y_preds = metrics_data["prediction"]
 
@@ -115,28 +111,17 @@ def metrics(data):
         "RMSE": mean_squared_error(y, y_preds) ** 0.5,
         "R2": r2_score(y, y_preds),
     }
+    
+    logger.info("Metrics job complete!")
 
     # MOC expects the metrics function to be a "yield" function
-    logger.info("Metrics job complete!")
     yield output_metrics
 
 
 # modelop.train
-def train(data):
+def train(training_data):
     
-    logger.info("data is of type: %s", type(data))
-
-    try:
-        logger.info("data is of shape: %s", data.shape)
-    except:
-        logger.info("data.shape failed")
-
-    # Load data
-    training_data = pandas.DataFrame(data).copy()
-
     logger.info("training_data is of shape: %s", training_data.shape)
-
-    print(training_data[["BsmtQual", "KitchenQual", "ExterQual"]].isna().sum(), flush=True)
     
     # Set aside ground truth to later re-append to dataframe
     y_train = training_data["SalePrice"]
@@ -206,7 +191,7 @@ def train(data):
     # Saving the final list of encoded columns
     logger.info("Pickling final list of columns for model to predict with")
     
-    # Pickle file should be written to outputDir    
+    # Pickle file should be written to outputDir/    
     with open("outputDir/train_encoded_columns.pickle", "wb") as columns_file:
         pickle.dump(train_encoded_columns, columns_file)
 
@@ -216,10 +201,9 @@ def train(data):
     # Standard scale data and pickle scaler
     standard_scaler = StandardScaler()
     X_train_ss = standard_scaler.fit_transform(numpy.array(X_train))
-    logger.info(
-        "Pickling standard scaler object that was trained on the training dataset"
-    )
-    # Pickle file should be written to outputDir    
+    logger.info("Pickling trained standard scaler object")
+    
+    # Pickle file should be written to outputDir/    
     with open("outputDir/standard_scaler.pickle", "wb") as scaler_file:
         pickle.dump(standard_scaler, scaler_file)
     
@@ -230,9 +214,9 @@ def train(data):
     logger.info("Fitting LASSO model")
     lasso = LassoCV(max_iter=1000)
     lasso.fit(X_train_ss, y_train_log)
-    logger.info("Pickling LASSO model that was trained on the training dataset")
+    logger.info("Pickling trained LASSO model")
 
-    # Pickle file should be written to outputDir    
+    # Pickle file should be written to outputDir/   
     with open("outputDir/lasso.pickle", "wb") as lasso_file:
         pickle.dump(lasso, lasso_file)
 
