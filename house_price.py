@@ -37,7 +37,7 @@ def begin():
 def action(data):
     
     # Turning data into a dataframe
-    logger.info("Loading input record into a pandas.DataFrame")
+    # logger.info("Loading input record into a pandas.DataFrame")
     input_data = pandas.DataFrame([data])
 
     # Set aside ground truth to later re-append to dataframe
@@ -49,7 +49,7 @@ def action(data):
     garage_finish = {"Fin": 3, "RFn": 2, "Unf": 1, "None": 0}
 
     # Imputations
-    logger.info("Conforming input dataset to be model-ready")
+    # logger.info("Conforming input dataset to be model-ready")
     input_data.loc[:, "GarageYrBlt"] = input_data.loc[:, "GarageYrBlt"].fillna(input_data["YearBuilt"])
     for col in ["GarageFinish", "BsmtQual", "FireplaceQu"]:
         input_data.loc[:, col] = input_data.loc[:, col].fillna("None")
@@ -80,15 +80,15 @@ def action(data):
     input_data["eOverallQual_TotalSF"] = input_data["OverallQual"] * input_data["eTotalSF"]
 
     # Limiting features to just the ones the model needs
-    logger.info("Selecting columns that model is expecting")
+    # logger.info("Selecting columns that model is expecting")
     input_data = input_data[train_encoded_columns]
 
     # Scale inputs
-    logger.info("Scaling data with pickled standard scaler")
+    # logger.info("Scaling data with pickled standard scaler")
     df_ss = standard_scaler.transform(input_data)
 
     # generate predictions and rename columns
-    logger.info("Generating predictions with the model and appending onto DataFrame")
+    # logger.info("Generating predictions with the model and appending onto DataFrame")
     input_data.loc[:, "prediction"] = numpy.round(numpy.expm1(lasso_model.predict(df_ss)), 2)
     input_data.loc[:, "SalePrice"] = ground_truth
 
