@@ -1,6 +1,7 @@
 # modelop.slot.0: in-use
 # modelop.slot.1: in-use
-
+# modelop.recordsets.0: true
+# modelop.recordsets.1: true
 
 import pandas
 import pickle
@@ -34,11 +35,11 @@ def begin():
 
 
 # modelop.score
-def action(data):
+def action(input_data):
     
     # Turning data into a dataframe
-    logger.info("Loading input record into a pandas.DataFrame")
-    input_data = pandas.DataFrame([data])
+    logger.info("Loading input data as a DataFrame")
+    logger.info("Input data is of shape: %s", input_data.shape)
 
     # Set aside ground truth to later re-append to dataframe
     ground_truth = input_data["SalePrice"]
@@ -93,7 +94,7 @@ def action(data):
     input_data.loc[:, "SalePrice"] = ground_truth
 
     # MOC expects the action function to be a "yield" function
-    yield input_data.to_dict(orient="records")
+    yield input_data
 
 
 # modelop.metrics
