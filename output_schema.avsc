@@ -1,0 +1,101 @@
+{
+    "type": "array",
+    "items": {
+        "type": "record",
+        "name": "output_schema.avsc",
+        "fields": [
+            {
+                "name": "Id",
+                "type": "int"
+            },
+            {
+                "name": "prediction",
+                "type": "double"
+            },
+            {
+                "name": "SalePrice",
+                "type": "int"
+            },
+            {   
+                "name": "eOverallQual_TotalSF",
+                "type": "int"
+            },
+            {
+                "name": "OverallQual",
+                "type": "int"
+            },
+            {
+                "name": "eTotalSF",
+                "type": "int"
+            },
+            {
+                "name": "GrLivArea",
+                "type": "int"
+            },
+            {
+                "name": "ExterQual",
+                "type": "int"
+            },
+            {
+                "name": "KitchenQual",
+                "type": "int"
+            },
+            {
+                "name": "GarageCars",
+                "type": "int"
+            },
+            {
+                "name": "eTotalBathrooms",
+                "type": "double"
+            },
+            {
+                "name": "BsmtQual",
+                "type": "int"
+            },
+            {
+                "name": "GarageArea",
+                "type": "int"
+            },
+            {
+                "name": "TotalBsmtSF",
+                "type": "int"
+            },
+            {
+                "name": "GarageFinish",
+                "type": "int"
+            },
+            {
+                "name": "YearBuilt",
+                "type": "int"
+            },
+            {
+                "name": "eHasGarage",
+                "type": "bool"
+            },
+            {
+                "name": "totRmsAbvGrd",
+                "type": "int"
+            },
+            {
+                "name": "eHasRemodeling",
+                "type": "bool"
+            },
+            {
+                "name": "FireplaceQu",
+                "type": "int"
+            },
+            {
+                "name": "MasVnrArea",
+                "type": "int"
+            },
+            {
+                "name": "eHasFireplace",
+                "type": "bool"
+            },
+            {
+                "name": "eHasBsmt",
+                "type": "bool"
+            }
+        ]
+     }
+}
