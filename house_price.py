@@ -43,6 +43,10 @@ def action(data):
     # Set aside ground truth to later re-append to dataframe
     ground_truth = input_data["SalePrice"]
 
+    # Set aside ListingPrice and Action to later re-append to dataframe
+    action_col = input_data['Action']
+    listing_price = input_data['ListingPrice']
+
     # Dictionaries to convert values in certain columns
     generic = {"Ex": 4, "Gd": 3, "TA": 2, "Fa": 1, "None": 0}
     fireplace_quality = {"Ex": 5, "Gd": 4, "TA": 3, "Fa": 2, "Po": 1, "None": 0}
@@ -82,7 +86,9 @@ def action(data):
     # Limiting features to just the ones the model needs
     # logger.info("Selecting columns that model is expecting")
     input_data = input_data[train_encoded_columns]
-
+    input_data.loc[:, "Action"] = action_col
+    input_data.loc[:, "ListingPrice"] = listing_price
+    
     # Scale inputs
     # logger.info("Scaling data with pickled standard scaler")
     df_ss = standard_scaler.transform(input_data)

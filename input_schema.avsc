@@ -33,6 +33,28 @@
       "scoringOptional": true
     },
     {
+      "name": "Action",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": false,
+      "specialValues": [],
+      "scoringOptional": false,
+      "actionTaken": 1
+    },
+    {
+      "name": "ListingPrice",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": false,
+      "specialValues": [],
+      "scoringOptional": false,
+      "baselineValue":true
+    },
+    {
       "name": "eOverallQual_TotalSF",
       "type": "int",
       "dataClass": "numerical",
