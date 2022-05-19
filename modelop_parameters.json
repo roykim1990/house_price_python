@@ -1,0 +1,20 @@
+{
+    "monitoring": {             
+        "performance": {
+            "model_type": "regression"
+        },
+        "business_value": {
+            "ROI": {
+                "baseline_field": "ListingPrice",
+                "label_field": "SalePrice",
+                "action_field": "Action",
+                "cost_multipliers": {
+                    "TP": 1,
+                    "FP": 1,
+                    "TN": -1,
+                    "FN": -1
+                }
+            }
+        }
+    }
+}
