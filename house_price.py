@@ -83,6 +83,11 @@ def action(data):
     # logger.info("Selecting columns that model is expecting")
     input_data = input_data[train_encoded_columns]
 
+    # Convert boolean fields into int fields
+    for col, val in input_data.dtypes.iteritems():
+        if val == 'bool':
+            input_data[col] = input_data[col].apply(lambda x: 1 if x else 0)
+    
     # Scale inputs
     # logger.info("Scaling data with pickled standard scaler")
     df_ss = standard_scaler.transform(input_data)
@@ -197,7 +202,12 @@ def train(training_data):
 
     # Choosing only the final list of encoded columns
     X_train = training_data[train_encoded_columns]
-    
+
+    # Convert boolean fields into int fields
+    for col, val in X_train.dtypes.iteritems():
+        if val == 'bool':
+            X_train[col] = X_train[col].apply(lambda x: 1 if x else 0)
+
     # Standard scale data and pickle scaler
     standard_scaler = StandardScaler()
     X_train_ss = standard_scaler.fit_transform(numpy.array(X_train))

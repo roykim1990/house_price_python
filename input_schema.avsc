@@ -164,8 +164,8 @@
     },
     {
       "name": "eHasGarage",
-      "type": "boolean",
-      "dataClass": "categorical",
+      "type": "int",
+      "dataClass": "numerical",
       "role": "predictor",
       "protectedClass": false,
       "driftCandidate": true,
@@ -184,8 +184,8 @@
     },
     {
       "name": "eHasRemodeling",
-      "type": "boolean",
-      "dataClass": "categorical",
+      "type": "int",
+      "dataClass": "numerical",
       "role": "predictor",
       "protectedClass": false,
       "driftCandidate": true,
