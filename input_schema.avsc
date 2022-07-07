@@ -231,6 +231,26 @@
       "driftCandidate": true,
       "specialValues": [],
       "scoringOptional": false
+    },
+    {
+      "name": "const",
+      "type": "int",
+      "dataClass": "numerical",
+      "role": "predictor",
+      "protectedClass": false,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
+    },
+    {
+      "name": "gender",
+      "type": "string",
+      "dataClass": "categorical",
+      "role": "predictor",
+      "protectedClass": true,
+      "driftCandidate": true,
+      "specialValues": [],
+      "scoringOptional": false
     }
   ]
 }
